@@ -43,12 +43,12 @@ class FinalProject extends Module {
         $tab = new Tab();
         $tab->class_name = 'SidebarButton'; // Nombre del controlador
         $tab->module = $this->name;
-        $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomer');
+       // $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomer');
+        $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomerThreads');
         $tab->name = [];
         foreach (Language::getLanguages(true) as $lang) {
-            $tab->name[$lang['id_lang']] = 'Envio productos';
+            $tab->name[$lang['id_lang']] = 'Optimize Profits';
         }
-
         return $tab->save();
     }
 
