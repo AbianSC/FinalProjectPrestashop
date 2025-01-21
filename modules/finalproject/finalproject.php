@@ -25,6 +25,7 @@ class FinalProject extends Module
         if (!parent::install() ||
             !Configuration::updateValue('FINAL_PROJECT_CONFIG', 'value') ||
             !$this->installDb() ||
+            !$this->installFetchApiTable() ||
             !$this->registerTab()
         ) {
             return false;
@@ -59,6 +60,30 @@ class FinalProject extends Module
             );
             return false;
         }
+    }
+
+    private function installFetchApiTable(){
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_api_responses` (
+            `product_id` INT NOT NULL,
+            `discount` DECIMAL(10,2),
+            PRIMARY KEY (`product_id`)
+        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+
+        try {
+            if (!Db::getInstance()->execute($sql)) {
+                throw new Exception('Table creation failed');
+            }
+            return true;
+        } catch (Exception $e) {
+            PrestaShopLogger::addLog(
+                'Failed to create table `' . _DB_PREFIX_ . 'ps_ia_api_responses`. Error: ' . $e->getMessage() . 'SQL: ' . $sql,
+                3,
+                null,
+                (int)$this->id
+            );
+            return false;
+        }
+
     }
 
     public function uninstall()
