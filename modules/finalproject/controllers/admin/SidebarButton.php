@@ -39,8 +39,7 @@ class SidebarButtonController extends ModuleAdminController
      */
     public function tableDataForAI()
     {
-        $sql = '
-        INSERT INTO `' . _DB_PREFIX_ . 'ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
+        $sql = 'INSERT INTO `' . _DB_PREFIX_ . 'ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
         SELECT 
             o.id_order AS sale_id,
             od.product_id AS product_id,
