@@ -10,10 +10,7 @@ class SidebarButtonController extends ModuleAdminController
         $this->table = 'ia_sales_data';
         $this->className = 'IA_Sales_Data';
         $this->identifier = 'sale_id';
-
-        // Configurar el título de la página en el backoffice
         $this->page_header_toolbar_title = $this->l('Optimize Profits');
-
     }
 
     public function initContent()
@@ -40,7 +37,7 @@ class SidebarButtonController extends ModuleAdminController
      */
     public function tableDataForAI()
     {
-        /*     $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
+        /* $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
              SELECT
                  o.id_order AS sale_id,
                  od.product_id AS product_id,
@@ -52,50 +49,57 @@ class SidebarButtonController extends ModuleAdminController
              FROM `ps_orders` o
              JOIN `ps_order_detail` od ON o.id_order = od.id_order
              JOIN `ps_product` p ON od.product_id = p.id_product
-             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;'us;
-       */
+             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;';
+        */
 
 
 //PRUEBAS
-        $sql = 'INSERT INTO ps_ia_sales_data (sale_id)
-                      SELECT id_order
-                        FROM ps_orders;';
-
+        /*
+            $sql = 'INSERT INTO ps_ia_sales_data (sale_id)
+                    SELECT id_order
+                    FROM ps_orders;';
+        */
         //==>ok ==> guarda los datos
 
-        /*   $sql='INSERT INTO ps_ia_sales_data (product_id)
-                    SELECT id_product
-                    FROM ps_product;';
-        */ //==>ok ==> guarda los datos
+        $sql = 'INSERT INTO ps_ia_sales_data (product_id)
+                   SELECT id_product
+                   FROM ps_product;';
+
+        //==>ok ==> guarda los datos
 
 
         /*   $sql='INSERT INTO ps_ia_sales_data (date)
                   SELECT date_add
                   FROM ps_orders;';
+        dd($sql);
         */  //==>ERROR ==> falla
 
 
         /* $sql='INSERT INTO ps_ia_sales_data (quantity)
                SELECT quantity
                FROM ps_product;';
+        dd($sql);
         *///==>ERROR ==> falla
 
 
         /*      $sql='INSERT INTO ps_ia_sales_data (total_price)
                     SELECT total_paid
                     FROM ps_orders;';
+        dd($sql);
         *///==>ERROR ==> falla
 
 
         /*   $sql='INSERT INTO ps_ia_sales_data (batch_expiry_date)
                  SELECT available_date
                  FROM ps_product;';
+        dd($sql);
         *///==>ERROR ==> falla
 
 
         /*    $sql='INSERT INTO ps_ia_sales_data (remaining_stock)
                    SELECT quantity
                    FROM ps_stock_available;';
+        dd($sql);
         */ //==>ERROR ==> falla
 
 
@@ -148,17 +152,17 @@ class SidebarButtonController extends ModuleAdminController
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-      /*  if ($httpCode == 200) {
-            $this->confirmations[] = $this->l('Data sent successfully.');
-        } else {
-            $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
-        }*/
+        /*  if ($httpCode == 200) {
+              $this->confirmations[] = $this->l('Data sent successfully.');
+          } else {
+              $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
+          }*/
         if ($httpCode == 200) {
             // Intentar decodificar la respuesta JSON
             $decodedResponse = json_decode($response, true);
 
             if ($decodedResponse !== null) {
-                // Guardar el JSON en una tabla de la base de datos
+                // Guardar el JSON en una tabla ps_ia_responses de la base de datos
                 $saveSql = 'INSERT INTO `ps_ia_api_responses` (`response_json`, `received_at`) VALUES (?, NOW())';
                 Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);
 

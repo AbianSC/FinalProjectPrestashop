@@ -62,12 +62,14 @@ class FinalProject extends Module
         }
     }
 
-    private function installFetchApiTable(){
+    private function installFetchApiTable()
+    {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_api_responses` (
-            `product_id` INT NOT NULL,
-            `discount` DECIMAL(10,2),
-            PRIMARY KEY (`product_id`)
+                id INT AUTO_INCREMENT PRIMARY KEY, 
+                response_json JSON NOT NULL,       
+                received_at DATETIME DEFAULT CURRENT_TIMESTAMP 
         ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
+
 
         try {
             if (!Db::getInstance()->execute($sql)) {
@@ -102,7 +104,9 @@ class FinalProject extends Module
         $sql = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'ia_sales_data`;';
         return Db::getInstance()->execute($sql);
     }
-    private function uninstallFetchApiTable(){
+
+    private function uninstallFetchApiTable()
+    {
         $sql = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'ia_api_responses`;';
         return Db::getInstance()->execute($sql);
     }
