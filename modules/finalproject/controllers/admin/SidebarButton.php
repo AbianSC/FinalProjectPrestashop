@@ -148,10 +148,27 @@ class SidebarButtonController extends ModuleAdminController
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($httpCode == 200) {
+      /*  if ($httpCode == 200) {
             $this->confirmations[] = $this->l('Data sent successfully.');
         } else {
             $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
+        }*/
+        if ($httpCode == 200) {
+            // Intentar decodificar la respuesta JSON
+            $decodedResponse = json_decode($response, true);
+
+            if ($decodedResponse !== null) {
+                // Guardar el JSON en una tabla de la base de datos
+                $saveSql = 'INSERT INTO `ps_ia_api_responses` (`response_json`, `received_at`) VALUES (?, NOW())';
+                Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);
+
+                $this->confirmations[] = $this->l('Data sent successfully and response saved.');
+            } else {
+                $this->errors[] = $this->l('Data sent, but the API response was not valid JSON.');
+            }
+        } else {
+            $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
         }
+
     }
 }
