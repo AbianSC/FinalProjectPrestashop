@@ -53,7 +53,7 @@ class SidebarButtonController extends ModuleAdminController
              FROM `ps_orders` o
              JOIN `ps_order_detail` od ON o.id_order = od.id_order
              JOIN `ps_product` p ON od.product_id = p.id_product
-             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;';
+             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;'us;
        */
 
 
