@@ -35,11 +35,11 @@ class FinalProject extends Module {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
             `sale_id` INT NOT NULL,
             `product_id` INT NOT NULL,
-            `date` DATETIME NOT NULL,
-            `quantity` INT NOT NULL,
-            `total_price` DECIMAL(10,2) NOT NULL,
-            `batch_expiry_date` DATE DEFAULT NULL,
-            `remaining_stock` INT NOT NULL,
+            `date` DATETIME,
+            `quantity` INT,
+            `total_price` DECIMAL(10,2),
+            `batch_expiry_date` DATE,
+            `remaining_stock` INT,
             PRIMARY KEY (`sale_id`, `product_id`)
         ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 

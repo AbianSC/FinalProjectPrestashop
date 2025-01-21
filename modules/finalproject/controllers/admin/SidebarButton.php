@@ -1,4 +1,5 @@
 <?php
+
 class SidebarButtonController extends ModuleAdminController
 {
     public function __construct()
@@ -14,6 +15,7 @@ class SidebarButtonController extends ModuleAdminController
         $this->page_header_toolbar_title = $this->l('Optimize Profits');
 
     }
+
     public function initContent()
     {
         parent::initContent();
@@ -23,7 +25,7 @@ class SidebarButtonController extends ModuleAdminController
 
 
     /**
-     * Dispara la acción al pulsar el botón.
+     * Dispara la acción al pulsar el botón. Relleno la tabla y creo el JSON
      */
     public function postProcess()
     {
@@ -39,20 +41,63 @@ class SidebarButtonController extends ModuleAdminController
      */
     public function tableDataForAI()
     {
-        $sql = 'INSERT INTO `' . _DB_PREFIX_ . 'ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
-        SELECT 
-            o.id_order AS sale_id,
-            od.product_id AS product_id,
-            o.date_add AS date,
-            od.product_quantity AS quantity,
-            o.total_paid AS total_price,
-            p.available_date AS batch_expiry_date,
-            sa.quantity AS remaining_stock
-        FROM `' . _DB_PREFIX_ . 'orders` o
-        JOIN `' . _DB_PREFIX_ . 'order_detail` od ON o.id_order = od.id_order
-        JOIN `' . _DB_PREFIX_ . 'product` p ON od.product_id = p.id_product
-        JOIN `' . _DB_PREFIX_ . 'stock_available` sa ON p.id_product = sa.id_product;
-        ';
+        /*     $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
+             SELECT
+                 o.id_order AS sale_id,
+                 od.product_id AS product_id,
+                 o.date_add AS date,
+                 od.product_quantity AS quantity,
+                 o.total_paid AS total_price,
+                 p.available_date AS batch_expiry_date,
+                 sa.quantity AS remaining_stock
+             FROM `ps_orders` o
+             JOIN `ps_order_detail` od ON o.id_order = od.id_order
+             JOIN `ps_product` p ON od.product_id = p.id_product
+             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;';
+       */
+
+
+//PRUEBAS
+          $sql='INSERT INTO ps_ia_sales_data (sale_id)
+                      SELECT id_order
+                        FROM ps_orders;';
+         //==>ok ==> guarda los datos
+
+        /*   $sql='INSERT INTO ps_ia_sales_data (product_id)
+                    SELECT id_product
+                    FROM ps_product;';
+        */ //==>ok ==> guarda los datos
+
+
+        /*   $sql='INSERT INTO ps_ia_sales_data (date)
+                  SELECT date_add
+                  FROM ps_orders;';
+        */  //==>ERROR ==> falla
+
+
+        /* $sql='INSERT INTO ps_ia_sales_data (quantity)
+               SELECT quantity
+               FROM ps_product;';
+        *///==>ERROR ==> falla
+
+
+        /*      $sql='INSERT INTO ps_ia_sales_data (total_price)
+                    SELECT total_paid
+                    FROM ps_orders;';
+        *///==>ERROR ==> falla
+
+
+        /*   $sql='INSERT INTO ps_ia_sales_data (batch_expiry_date)
+                 SELECT available_date
+                 FROM ps_product;';
+        *///==>ERROR ==> falla
+
+
+        /*    $sql='INSERT INTO ps_ia_sales_data (remaining_stock)
+                   SELECT quantity
+                   FROM ps_stock_available;';
+        */ //==>ERROR ==> falla
+
 
         try {
             if (!Db::getInstance()->execute($sql)) {
@@ -69,12 +114,13 @@ class SidebarButtonController extends ModuleAdminController
         }
     }
 
+
     /**
      * Enviar datos de la tabla `ps_ia_sales_data` como JSON a una API.
      */
     private function sendDataAsJson()
     {
-        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'ia_sales_data`';
+        $sql = 'SELECT * FROM `ps_ia_sales_data`';
         $data = Db::getInstance()->executeS($sql);
 
         if (!$data) {
