@@ -88,7 +88,8 @@ class FinalProject extends Module
 
     public function uninstall()
     {
-        if (!$this->uninstallDb() ||
+        if (!$this->uninstallFetchApiTable() ||
+            !$this->uninstallDb() ||
             !parent::uninstall() ||
             !Configuration::deleteByName('FINAL_PROJECT_CONFIG')) {
             return false;
@@ -99,6 +100,10 @@ class FinalProject extends Module
     private function uninstallDb()
     {
         $sql = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'ia_sales_data`;';
+        return Db::getInstance()->execute($sql);
+    }
+    private function uninstallFetchApiTable(){
+        $sql = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'ia_api_responses`;';
         return Db::getInstance()->execute($sql);
     }
 
