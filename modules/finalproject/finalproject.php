@@ -10,12 +10,12 @@ class FinalProject extends Module
         $this->name = "finalproject";
         $this->tab = 'front_office_features';
         $this->version = "1.0.0";
-        $this->author = 'AbianCristian';
+        $this->author = 'Abian && Cristian';
         $this->need_instance = 0;
         $this->bootstrap = true;
 
-        $this->displayName = 'Final Project';
-        $this->description = 'Sugerencia de promociones con caducidad';
+        $this->displayName = 'PharmacIA';
+        $this->description = 'Optimize the sale of pharmaceutical products with artificial intelligence';
         $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
         parent::__construct();
     }
