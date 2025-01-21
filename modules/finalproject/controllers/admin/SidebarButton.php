@@ -23,7 +23,6 @@ class SidebarButtonController extends ModuleAdminController
         $this->setTemplate('sidebar_button.tpl');
     }
 
-
     /**
      * Dispara la acción al pulsar el botón. Relleno la tabla y creo el JSON
      */
@@ -58,10 +57,11 @@ class SidebarButtonController extends ModuleAdminController
 
 
 //PRUEBAS
-          $sql='INSERT INTO ps_ia_sales_data (sale_id)
+        $sql = 'INSERT INTO ps_ia_sales_data (sale_id)
                       SELECT id_order
                         FROM ps_orders;';
-         //==>ok ==> guarda los datos
+
+        //==>ok ==> guarda los datos
 
         /*   $sql='INSERT INTO ps_ia_sales_data (product_id)
                     SELECT id_product
@@ -113,7 +113,6 @@ class SidebarButtonController extends ModuleAdminController
             return false;
         }
     }
-
 
     /**
      * Enviar datos de la tabla `ps_ia_sales_data` como JSON a una API.

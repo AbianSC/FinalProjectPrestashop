@@ -1,9 +1,12 @@
 <?php
-if(!defined('_PS_VERSION_')){
+if (!defined('_PS_VERSION_')) {
     exit;
 }
-class FinalProject extends Module {
-    public function __construct() {
+
+class FinalProject extends Module
+{
+    public function __construct()
+    {
         $this->name = "finalproject";
         $this->tab = 'front_office_features';
         $this->version = "1.0.0";
@@ -23,8 +26,7 @@ class FinalProject extends Module {
             !Configuration::updateValue('FINAL_PROJECT_CONFIG', 'value') ||
             !$this->installDb() ||
             !$this->registerTab()
-        )
-        {
+        ) {
             return false;
         }
         return true;
@@ -50,7 +52,7 @@ class FinalProject extends Module {
             return true;
         } catch (Exception $e) {
             PrestaShopLogger::addLog(
-                'Failed to create table `' . _DB_PREFIX_ . 'ia_sales_data`. Error: ' . $e->getMessage() .  'SQL: ' . $sql,
+                'Failed to create table `' . _DB_PREFIX_ . 'ia_sales_data`. Error: ' . $e->getMessage() . 'SQL: ' . $sql,
                 3,
                 null,
                 (int)$this->id
@@ -63,8 +65,7 @@ class FinalProject extends Module {
     {
         if (!$this->uninstallDb() ||
             !parent::uninstall() ||
-            !Configuration::deleteByName('FINAL_PROJECT_CONFIG'))
-        {
+            !Configuration::deleteByName('FINAL_PROJECT_CONFIG')) {
             return false;
         }
         return true;
@@ -76,13 +77,12 @@ class FinalProject extends Module {
         return Db::getInstance()->execute($sql);
     }
 
-
     private function registerTab()
     {
         $tab = new Tab();
         $tab->class_name = 'SidebarButton'; // Nombre del controlador
         $tab->module = $this->name;
-       // $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomer');
+        // $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomer');
         $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomerThreads');
         $tab->name = [];
         foreach (Language::getLanguages(true) as $lang) {
@@ -90,7 +90,6 @@ class FinalProject extends Module {
         }
         return $tab->save();
     }
-
 
 }
 
