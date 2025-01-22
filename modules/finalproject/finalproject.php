@@ -35,13 +35,22 @@ class FinalProject extends Module
 
     private function installDb()
     {
-        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
+        /*$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
             `data_id` INT NOT NULL AUTO_INCREMENT,
             `sale_id` INT NOT NULL,
             `product_id` INT NOT NULL,
             `date` DATETIME,
             `quantity` INT,
             `total_price` DECIMAL(10,2),
+            `batch_expiry_date` DATE,
+            `remaining_stock` INT,
+            PRIMARY KEY (`data_id`)
+        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';*/
+
+        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
+            `data_id` INT NOT NULL AUTO_INCREMENT,
+            `product_id` INT NOT NULL,
+            `price` DECIMAL(10,2),
             `batch_expiry_date` DATE,
             `remaining_stock` INT,
             PRIMARY KEY (`data_id`)

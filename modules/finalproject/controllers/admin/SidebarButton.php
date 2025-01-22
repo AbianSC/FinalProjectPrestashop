@@ -37,19 +37,14 @@ class SidebarButtonController extends ModuleAdminController
      */
     public function tableDataForAI()
     {
-       $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
+        $sql = 'INSERT INTO `ps_ia_sales_data` (product_id, price, batch_expiry_date, remaining_stock)
              SELECT
-                 o.id_order AS sale_id,
-                 od.product_id AS product_id,
-                 o.date_add AS date,
-                 od.product_quantity AS quantity,
-                 o.total_paid AS total_price,
+                 p.id_product AS product_id,
+                 p.price AS price,
                  p.available_date AS batch_expiry_date,
                  sa.quantity AS remaining_stock
-             FROM `ps_orders` o
-             JOIN `ps_order_detail` od ON o.id_order = od.id_order
-             JOIN `ps_product` p ON od.product_id = p.id_product
-             JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;';
+             FROM `ps_product` p
+             LEFT JOIN `ps_stock_available` sa ON p.id_product = sa.id_product';
 
         try {
             if (!Db::getInstance()->execute($sql)) {
@@ -79,11 +74,21 @@ class SidebarButtonController extends ModuleAdminController
             return;
         }
 
-        // Convertir los datos a JSON
-        $jsonData = json_encode($data);
+        foreach ($data as $row) {
+            $row['data_id'] = (int)$row['data_id'];
+            $row['product_id'] = (int)$row['product_id'];
+            $row['price'] = (float)$row['price'];
+            //$row['batch_expiry_date'] = date('Y-m-d', strtotime($row['batch_expiry_date']));
+            $row['batch_expiry_date'] = "2025-01-01";
+            $row['remaining_stock'] = (int)$row['remaining_stock'];
+            $proccessData[] = $row;
+        }
+
+        // Convertir el array en JSON
+        $jsonData = json_encode($proccessData, JSON_PRETTY_PRINT);
 
         // Configurar la URL de la API
-        $apiUrl = 'https://example.com/api/receive-data';
+        $apiUrl = 'https://api-pharmacy-project.onrender.com/predict';
 
         // Enviar los datos a la API
         $ch = curl_init();
@@ -97,6 +102,7 @@ class SidebarButtonController extends ModuleAdminController
         ]);
 
         $response = curl_exec($ch);
+
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
@@ -106,8 +112,8 @@ class SidebarButtonController extends ModuleAdminController
 
             if ($decodedResponse !== null) {
                 // Guardar el JSON en una tabla ps_ia_responses de la base de datos
-                $saveSql = 'INSERT INTO `ps_ia_api_responses` (`response_json`, `received_at`) VALUES (?, NOW())';
-                Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);
+                /* $saveSql = 'INSERT INTO `ps_ia_api_responses` (`response_json`, `received_at`) VALUES (?, NOW())';
+                 Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);*/
 
                 $this->confirmations[] = $this->l('Data sent successfully and response saved.');
             } else {
