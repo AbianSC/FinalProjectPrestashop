@@ -36,6 +36,7 @@ class FinalProject extends Module
     private function installDb()
     {
         $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
+            `data_id` INT NOT NULL AUTO_INCREMENT,
             `sale_id` INT NOT NULL,
             `product_id` INT NOT NULL,
             `date` DATETIME,
@@ -43,7 +44,7 @@ class FinalProject extends Module
             `total_price` DECIMAL(10,2),
             `batch_expiry_date` DATE,
             `remaining_stock` INT,
-            PRIMARY KEY (`sale_id`, `product_id`)
+            PRIMARY KEY (`data_id`)
         ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
         try {

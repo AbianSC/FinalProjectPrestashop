@@ -37,7 +37,7 @@ class SidebarButtonController extends ModuleAdminController
      */
     public function tableDataForAI()
     {
-        /* $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
+       $sql = 'INSERT INTO `ps_ia_sales_data` (sale_id, product_id, date, quantity, total_price, batch_expiry_date, remaining_stock)
              SELECT
                  o.id_order AS sale_id,
                  od.product_id AS product_id,
@@ -50,58 +50,6 @@ class SidebarButtonController extends ModuleAdminController
              JOIN `ps_order_detail` od ON o.id_order = od.id_order
              JOIN `ps_product` p ON od.product_id = p.id_product
              JOIN `ps_stock_available` sa ON p.id_product = sa.id_product;';
-        */
-
-
-//PRUEBAS
-        /*
-            $sql = 'INSERT INTO ps_ia_sales_data (sale_id)
-                    SELECT id_order
-                    FROM ps_orders;';
-        */
-        //==>ok ==> guarda los datos
-
-        $sql = 'INSERT INTO ps_ia_sales_data (product_id)
-                   SELECT id_product
-                   FROM ps_product;';
-
-        //==>ok ==> guarda los datos
-
-
-        /*   $sql='INSERT INTO ps_ia_sales_data (date)
-                  SELECT date_add
-                  FROM ps_orders;';
-        dd($sql);
-        */  //==>ERROR ==> falla
-
-
-        /* $sql='INSERT INTO ps_ia_sales_data (quantity)
-               SELECT quantity
-               FROM ps_product;';
-        dd($sql);
-        *///==>ERROR ==> falla
-
-
-        /*      $sql='INSERT INTO ps_ia_sales_data (total_price)
-                    SELECT total_paid
-                    FROM ps_orders;';
-        dd($sql);
-        *///==>ERROR ==> falla
-
-
-        /*   $sql='INSERT INTO ps_ia_sales_data (batch_expiry_date)
-                 SELECT available_date
-                 FROM ps_product;';
-        dd($sql);
-        *///==>ERROR ==> falla
-
-
-        /*    $sql='INSERT INTO ps_ia_sales_data (remaining_stock)
-                   SELECT quantity
-                   FROM ps_stock_available;';
-        dd($sql);
-        */ //==>ERROR ==> falla
-
 
         try {
             if (!Db::getInstance()->execute($sql)) {
@@ -152,11 +100,6 @@ class SidebarButtonController extends ModuleAdminController
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        /*  if ($httpCode == 200) {
-              $this->confirmations[] = $this->l('Data sent successfully.');
-          } else {
-              $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
-          }*/
         if ($httpCode == 200) {
             // Intentar decodificar la respuesta JSON
             $decodedResponse = json_decode($response, true);
