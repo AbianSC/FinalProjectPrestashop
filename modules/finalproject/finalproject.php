@@ -73,7 +73,7 @@ class FinalProject extends Module
                     remaining_stock INT,
                     ss INT,       
                     stockfinalestimado INT,
-                    stockrecomended INT,
+                    stockrecommend INT,
                     stocktobuy INT,
                     year INT
              ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';

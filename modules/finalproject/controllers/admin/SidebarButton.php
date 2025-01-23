@@ -102,30 +102,22 @@ class SidebarButtonController extends ModuleAdminController
         ]);
 
         $response = curl_exec($ch);
+
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($httpCode == 200) {
-            // Intentar decodificar la respuesta JSON
+
             $decodedResponse = json_decode($response, true);
-            if ($decodedResponse !== null) {
-                // Guardar el JSON en una tabla ps_ia_responses de la base de datos
-                // Ejecutar la consulta con los valores
+            try {
 
-                $saveSql = 'INSERT INTO `ps_ia_api_responses`
-            (`discount`, `final_price`, `month`, `predictions`, `price`, `product_id`, `remaining_stock`, `ss`, `stockfinalestimado`, `stockrecomended`, `stocktobuy`, `year`)
-            VALUES (1, 20.0, 1, 17, 20.5, 10, 20, 4, 20, 25, 5, 2025)';
-                Db::getInstance()->execute($saveSql);
-                /*   Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);*/
+                $db = Db::getInstance();
+                $db->insert('ia_api_responses', $decodedResponse['results']);
 
-                $this->confirmations[] = $this->l('Data sent successfully and response saved.');
-            } else {
-                $this->errors[] = $this->l('Data sent, but the API response was not valid or did not contain the "results" key.');
+                echo "Todos los productos fueron insertados correctamente.";
+            } catch (PDOException $e) {
+                echo "Error al insertar los datos: " . $e->getMessage();
             }
-
-        } else {
-            $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
         }
-
     }
 }
