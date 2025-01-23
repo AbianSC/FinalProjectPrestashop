@@ -115,10 +115,35 @@ class SidebarButtonController extends ModuleAdminController
                 $db = Db::getInstance();
                 $db->insert('ia_api_responses', $decodedResponse['results']);
                 $this->confirmations[] = $this->l('Data sent successfully and response saved.');
+                $this->updateSpecificPrices();
             } catch (PDOException $e) {
                 $this->errors[] = $this->l('Error to insert data.');
             }
 
         }
+    }
+
+    private function updateSpecificPrices()
+    {
+        $sql = 'SELECT product_id, discount FROM ' . _DB_PREFIX_ . 'ia_api_responses';
+        $discounts = Db::getInstance()->executeS($sql);
+
+        if (!$discounts) {
+            die('No se encontraron datos en la tabla ps_ia_api_responses.');
+        }
+
+        foreach ($discounts as $row) {
+            $productId = (int)$row['product_id'];
+            $discountInt = (int)$row['discount'];
+
+            $discountFloat = $discountInt / 100;
+
+            $updateSql = 'UPDATE ' . _DB_PREFIX_ . 'specific_price 
+                          SET reduction = ' . (float)$discountFloat . ' 
+                          WHERE id_product = ' . (int)$productId;
+
+            Db::getInstance()->execute($updateSql);
+        }
+
     }
 }
