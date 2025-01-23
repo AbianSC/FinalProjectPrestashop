@@ -109,15 +109,16 @@ class SidebarButtonController extends ModuleAdminController
         if ($httpCode == 200) {
 
             $decodedResponse = json_decode($response, true);
-            try {
 
+            try {
+                //Insertamos los datos de respuesta de la API en la tabla ps_ai_api_responses
                 $db = Db::getInstance();
                 $db->insert('ia_api_responses', $decodedResponse['results']);
-
-                echo "Todos los productos fueron insertados correctamente.";
+                $this->confirmations[] = $this->l('Data sent successfully and response saved.');
             } catch (PDOException $e) {
-                echo "Error al insertar los datos: " . $e->getMessage();
+                $this->errors[] = $this->l('Error to insert data.');
             }
+
         }
     }
 }
