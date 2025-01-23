@@ -35,18 +35,6 @@ class FinalProject extends Module
 
     private function installDb()
     {
-        /*$sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
-            `data_id` INT NOT NULL AUTO_INCREMENT,
-            `sale_id` INT NOT NULL,
-            `product_id` INT NOT NULL,
-            `date` DATETIME,
-            `quantity` INT,
-            `total_price` DECIMAL(10,2),
-            `batch_expiry_date` DATE,
-            `remaining_stock` INT,
-            PRIMARY KEY (`data_id`)
-        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';*/
-
         $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_sales_data` (
             `data_id` INT NOT NULL AUTO_INCREMENT,
             `product_id` INT NOT NULL,
@@ -74,12 +62,21 @@ class FinalProject extends Module
 
     private function installFetchApiTable()
     {
-        $sql = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'ia_api_responses` (
-                id INT AUTO_INCREMENT PRIMARY KEY, 
-                response_json JSON NOT NULL,       
-                received_at DATETIME DEFAULT CURRENT_TIMESTAMP 
-        ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
-
+        $sql = 'CREATE TABLE IF NOT EXISTS`' . _DB_PREFIX_ . 'ia_api_responses` (
+                    id INT AUTO_INCREMENT PRIMARY KEY, 
+                    discount INT,
+                    final_price FLOAT,
+                    month INT,
+                    predictions INT,
+                    price FLOAT,
+                    product_id INT,
+                    remaining_stock INT,
+                    ss INT,       
+                    stockfinalestimado INT,
+                    stockrecomended INT,
+                    stocktobuy INT,
+                    year INT
+             ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
 
         try {
             if (!Db::getInstance()->execute($sql)) {
@@ -88,7 +85,7 @@ class FinalProject extends Module
             return true;
         } catch (Exception $e) {
             PrestaShopLogger::addLog(
-                'Failed to create table `' . _DB_PREFIX_ . 'ps_ia_api_responses`. Error: ' . $e->getMessage() . 'SQL: ' . $sql,
+                'Failed to create table `' . _DB_PREFIX_ . 'ia_api_responses`. Error: ' . $e->getMessage() . 'SQL: ' . $sql,
                 3,
                 null,
                 (int)$this->id
@@ -126,7 +123,6 @@ class FinalProject extends Module
         $tab = new Tab();
         $tab->class_name = 'SidebarButton'; // Nombre del controlador
         $tab->module = $this->name;
-        // $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomer');
         $tab->id_parent = (int)Tab::getIdFromClassName('AdminParentCustomerThreads');
         $tab->name = [];
         foreach (Language::getLanguages(true) as $lang) {

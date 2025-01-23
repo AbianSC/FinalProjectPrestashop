@@ -74,11 +74,11 @@ class SidebarButtonController extends ModuleAdminController
             return;
         }
 
+        //Fomarteamos los datos: pasar de string a int, float
         foreach ($data as $row) {
             $row['data_id'] = (int)$row['data_id'];
             $row['product_id'] = (int)$row['product_id'];
             $row['price'] = (float)$row['price'];
-            //$row['batch_expiry_date'] = date('Y-m-d', strtotime($row['batch_expiry_date']));
             $row['batch_expiry_date'] = "2025-01-01";
             $row['remaining_stock'] = (int)$row['remaining_stock'];
             $proccessData[] = $row;
@@ -102,23 +102,27 @@ class SidebarButtonController extends ModuleAdminController
         ]);
 
         $response = curl_exec($ch);
-
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($httpCode == 200) {
             // Intentar decodificar la respuesta JSON
             $decodedResponse = json_decode($response, true);
-
             if ($decodedResponse !== null) {
                 // Guardar el JSON en una tabla ps_ia_responses de la base de datos
-                /* $saveSql = 'INSERT INTO `ps_ia_api_responses` (`response_json`, `received_at`) VALUES (?, NOW())';
-                 Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);*/
+                // Ejecutar la consulta con los valores
+
+                $saveSql = 'INSERT INTO `ps_ia_api_responses`
+            (`discount`, `final_price`, `month`, `predictions`, `price`, `product_id`, `remaining_stock`, `ss`, `stockfinalestimado`, `stockrecomended`, `stocktobuy`, `year`)
+            VALUES (1, 20.0, 1, 17, 20.5, 10, 20, 4, 20, 25, 5, 2025)';
+                Db::getInstance()->execute($saveSql);
+                /*   Db::getInstance()->execute($saveSql, [json_encode($decodedResponse)]);*/
 
                 $this->confirmations[] = $this->l('Data sent successfully and response saved.');
             } else {
-                $this->errors[] = $this->l('Data sent, but the API response was not valid JSON.');
+                $this->errors[] = $this->l('Data sent, but the API response was not valid or did not contain the "results" key.');
             }
+
         } else {
             $this->errors[] = $this->l('Failed to send data. API responded with HTTP Code: ') . $httpCode;
         }
