@@ -1,5 +1,12 @@
 <?php
 
+/*use PrestaShop\PrestaShop\Adapter\Cache\CacheClearer;
+use PrestaShop\PrestaShop\Core\Cache\Clearer\SymfonyCacheClearer;
+use PrestaShop\PrestaShop\Adapter\Cache\LegacyCacheClearer;*/
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+
+
 class SidebarButtonController extends ModuleAdminController
 {
     public function __construct()
@@ -116,6 +123,7 @@ class SidebarButtonController extends ModuleAdminController
                 $db->insert('ia_api_responses', $decodedResponse['results']);
                 $this->confirmations[] = $this->l('Data sent successfully and response saved.');
                 $this->updateSpecificPrices();
+                $this->clearCache();
             } catch (PDOException $e) {
                 $this->errors[] = $this->l('Error to insert data.');
             }
@@ -146,4 +154,26 @@ class SidebarButtonController extends ModuleAdminController
         }
 
     }
+
+    function clearCache()
+    {
+        // Limpia la caché de Smarty
+        $smarty = Context::getContext()->smarty;
+        $smarty->clearAllCache();
+
+        // Limpiar las cachés de otros módulos
+        Hook::exec('actionClearCache');
+
+        // Limpiar los archivos de caché de PrestaShop
+        Tools::clearCache();
+
+        // Opcional: Limpiar el cache de la base de datos
+        Db::getInstance()->execute('OPTIMIZE TABLE ' . _DB_PREFIX_ . 'product');
+    }
+
+
+
+
+
+
 }
