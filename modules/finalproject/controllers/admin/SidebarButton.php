@@ -169,11 +169,7 @@ class SidebarButtonController extends ModuleAdminController
 
         // Opcional: Limpiar el cache de la base de datos
         Db::getInstance()->execute('OPTIMIZE TABLE ' . _DB_PREFIX_ . 'product');
+
     }
-
-
-
-
-
 
 }
