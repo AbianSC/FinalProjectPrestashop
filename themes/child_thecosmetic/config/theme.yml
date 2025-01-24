@@ -1,0 +1,6 @@
+parent: thecosmetic
+name: child_thecosmetic
+display_name: Child theme of thecosmetic's theme
+version: 1.0.0
+assets:
+  use_parent_assets: false

@@ -12358,7 +12358,11 @@ body#checkout #gift_message {
 }
 
 .product-flags .new {
-    background: none repeat scroll 0 0 #ec4249;
+   /* background: none repeat scroll 0 0 #ec4249;*/
+    background: none repeat scroll 0 0 #28a745 !important;
+}
+.new {
+    background-color:black !important;
 }
 
 .star::after {
@@ -12378,7 +12382,8 @@ body#checkout #gift_message {
 }
 
 .discount-percentage {
-    background: none repeat scroll 0 0 #EC4249;
+    /*background: none repeat scroll 0 0 #EC4249;*/
+    background: none repeat scroll 0 0 #28a745 !important;
     color: #FFFFFF;
     padding: 2px 5px;
     z-index: 2;
