@@ -1,8 +1,5 @@
 <?php
 
-/*use PrestaShop\PrestaShop\Adapter\Cache\CacheClearer;
-use PrestaShop\PrestaShop\Core\Cache\Clearer\SymfonyCacheClearer;
-use PrestaShop\PrestaShop\Adapter\Cache\LegacyCacheClearer;*/
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
