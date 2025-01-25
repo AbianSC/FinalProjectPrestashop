@@ -4,6 +4,7 @@
  */
  #header{ background: white !important; }
 
+/*
 .new{
  background: #28a745 !important;
 }
@@ -13,3 +14,65 @@
 }
 
 
+.add_to_cart btn btn-primary {
+ background: #28a745 !important;
+}
+*/
+
+.alert-info {
+ background-color: #d9edf7;
+ border-color: #bcdff1;
+ color: #31708f;
+ visibility: hidden;
+}
+
+#footer {
+background: #006b73 !important;
+}
+
+.ybc_coppyright {
+ visibility: hidden;
+}
+
+.footer-container {
+ color: #ebebeb !important;
+}
+
+
+.footer_bottom > .container {
+ border-top: 1px solid #ebebeb;
+}
+
+.payment_footer ::before {
+ border-bottom: 1px solid #ebebeb;
+}
+
+.header_content tonglao {
+ background: #006b73 !important;
+}
+.header-nav {
+ background: #006b73 !important;
+}
+
+
+.right-nav {
+ color:whitesmoke;
+}
+
+.footer_text_welcome {
+ visibility: hidden;
+}
+
+/*
+#header, #header .header-top {
+ background-color: #ebebeb;
+}*/
+
+
+.payment_footer::before {
+ background: #ebebeb;
+ visibility: hidden;
+}
+.payment_footer::after {
+ background: #ebebeb;
+}
