@@ -76,3 +76,8 @@ background: #006b73 !important;
 .payment_footer::after {
  background: #ebebeb;
 }
+
+.footer_logo img {
+ display: none;
+ visibility: hidden;
+}
