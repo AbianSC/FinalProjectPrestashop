@@ -81,3 +81,19 @@ background: #006b73 !important;
  display: none;
  visibility: hidden;
 }
+
+.block-social {
+ color: whitesmoke;
+}
+
+.product-title {
+ max-height: 20px !important;
+ overflow:hidden;
+}
+div .owl-next {
+ margin-top:300px;
+}
+div .owl-prev {
+ margin-top:300px;
+ margin-left: -30px;
+}
