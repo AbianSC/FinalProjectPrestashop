@@ -97,3 +97,13 @@ div .owl-prev {
  margin-top:300px;
  margin-left: -30px;
 }
+
+body.ybc-skin-rose *::selection {
+ background-color: #00ccd6;
+ color: #ffffff;
+}
+/*
+body.ybc-skin-blue *::selection {
+ background-color: #00ccd6;
+ color: #ffffff;
+}*/
